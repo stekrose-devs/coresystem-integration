@@ -1,6 +1,6 @@
 # Take Home Scenario
 ## Diagram
-![diagram](Images/diagram.png)
+![diagram](images/diagram.png)
 
 ## Summary
 
