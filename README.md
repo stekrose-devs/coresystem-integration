@@ -3,6 +3,7 @@
 ![diagram](Images/diagram.png)
 
 ## Summary
+
 ### Section 1
 A lambda function will be a subscriber of a Kafka topic of member related changes. This lambda will be responsible of consuming the raw messages, storing these messages in an S3 bucket, and transforming this messages to be put on the SQS queue down stream for eventually the Member API to consume. A DynamoDB table will be used to keep track of the message ids and when each message was processed to help with ensure that each message is processed once. 
 
