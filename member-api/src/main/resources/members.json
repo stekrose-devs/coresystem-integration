@@ -1,0 +1,24 @@
+[
+  {
+    "memberId": "123e4567-e89b-12d3-a456-426614174000",
+    "firstName": "John",
+    "lastName": "Doe",
+    "dateOfBirth": "1980-01-01",
+    "addressLine1": "123 Main St",
+    "city": "Des Moines",
+    "state": "IA",
+    "zipCode": "12345",
+    "phoneNumber": "555-123-0909"
+  },
+  {
+    "memberId": "123e4567-e89b-12d3-a456-426614174001",
+    "firstName": "Stephen",
+    "lastName": "Rose",
+    "dateOfBirth": "1990-05-15",
+    "addressLine1": "456 Elm St",
+    "city": "some town",
+    "state": "NY",
+    "zipCode": "67890",
+    "phoneNumber": "555-567-1201"
+  }
+]
