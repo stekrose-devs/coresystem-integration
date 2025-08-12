@@ -15,12 +15,15 @@ There will be subscribers to the SNS topics to get the changes from the Member A
 
 
 ## Assumptions
-* All services will have IAM permissions with the least privilege necessary to support this flow. All sensitive data will be encrypted at rest. The API will use OAuth bearer tokens to handle authorization and authentication as well as client secrets for service to service. 
-* Dead letter queues will be used to handle message processing failures or if a message fails to deliver to their target.
+* All services will have IAM permissions with the least privilege necessary to support this flow. All sensitive data will be encrypted at rest. The API will use OAuth bearer tokens to handle authorization and authentication and keep client secrets encrypted in a service such as AWS Secret Manager. 
+* If needed, our lambdas can have exponential back off logic to retry errors when dependencies fail. Otherwise, dead letter queues will be used to handle message processing failures or if a message fails to deliver to their target.
 * Cloudwatch metrics and log groups will be used to support observability. Cloudwatch metrics can be used to trigger on call alerts, Team alerts, emails, etc. on failures.
-* Use AWS FIFO SNS and SQS support if ordering matters. If independent matters, then a DynamoDB table might be needed next to each SQS queue to help with replaying messages. 
+* Use AWS FIFO SNS and SQS support if ordering matters. If idempotency matters, then a DynamoDB table might be needed next to each SQS queue to help with replaying messages. 
 
 ## Design choices and considerations
+* Member API design summary
+  * Deploy the database using AWS RDS so we don't need to manage a container. This can be PostgreSQL, Aurora, MySQL -- it will depend on Wellmark's preference in a relational database. 
+  * The API will be hosted using ECS and Fargate. This will help with scaling in the future. I will acknowledge that API Gateway + Lambdas could be an option here. I'm not too terribly familiar with using API Gateway; if this was a formal proposal with more time, I would experiment with this route as well to see if it would fit our needs. 
 * Using the API as a way to fan out changes downstream
   * Inserting the transformed data directly into the transactional database that backs the Member API is definitely an option. On the surface, this might be the most straight forward path to achieve the goal. In this case, the only entry point to create member changes would be through the CoreSystem or the Kafka topics. I think being able to decouple the API and the rest of the downstream from CoreSystem/Kafka topics would give us more flexibility in the future when there will inevitably be a need to get member changes into the system outside of CoreSystem.
 * Possibly use AWS Step Functions
